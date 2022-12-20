@@ -52,7 +52,7 @@ const list = async <TData>(query: Filter<Document>, page: number, dbName: string
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
-    const count = await collection.count();
+    const count = await collection.find(query).count();
 
     const findResult = (await collection.find(query).skip(NUMBER_PER_PAGE * page).limit(NUMBER_PER_PAGE).toArray()) as unknown as TData[];
     client.close()
@@ -87,12 +87,12 @@ const remove = async (id: string, dbName: string, collectionName: string) => {
     return deleteResult
 }
 
-const createProject = (name: string, description: string) => create<CreateProject>({ name, description }, dbName, projectCollectionName);
-const listProjects = async (filters?: FilterProject, page: number) => list<Project>(getQuery(filters), page, dbName, projectCollectionName);
-const getProject = (id: string) => get<Project>(id, dbName, projectCollectionName);
-const patchProject = async (id: string, project: PatchProject) => update<PatchProject>(id, project, dbName, projectCollectionName);
-const putProject = async (id: string, project: Project) => update<Project>(id, project, dbName, projectCollectionName);
-const deleteProject = async (id: string) => remove(id, dbName, projectCollectionName);
+const createProject = async (name: string, description: string) => await create<CreateProject>({ name, description }, dbName, projectCollectionName);
+const listProjects = async (filters?: FilterProject, page: number) => await list<Project>(getQuery(filters), page, dbName, projectCollectionName);
+const getProject = async (id: string) => await get<Project>(id, dbName, projectCollectionName);
+const patchProject = async (id: string, project: PatchProject) => await update<PatchProject>(id, project, dbName, projectCollectionName);
+const putProject = async (id: string, project: Project) => await update<Project>(id, project, dbName, projectCollectionName);
+const deleteProject = async (id: string) => await remove(id, dbName, projectCollectionName);
 
 
 export const MongoService = {
