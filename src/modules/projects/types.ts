@@ -56,7 +56,17 @@ export type CreateProject = {
   created_by: User,
 }
 
-export type UpdateProject = {
+export type PatchProject = {
   name?: string,
   description?: string,
+}
+
+export type FilterProject = {
+  name?: string,
+  creator?: string,
+  created_at?: string,
+}
+
+export interface ProjectQuery extends FilterProject {
+  $or?: { [key: string]: { $regex: string } }[]
 }
