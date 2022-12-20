@@ -1,6 +1,6 @@
-import { FilterProject, ProjectQuery } from "./types";
+import { FilterProject, ProjectQuery, LogQuery } from "./types";
 
-export const getQuery = (filter?: FilterProject) => {
+export const getProjectQuery = (filter?: FilterProject) => {
     const queryObject: ProjectQuery = {};
 
     if (!filter) {
@@ -17,6 +17,28 @@ export const getQuery = (filter?: FilterProject) => {
 
     if (filter.created_at) {
         queryObject["created_at"] = filter.created_at;
+    }
+
+    return queryObject;
+}
+
+export const getLogQuery = (filter?: FilterLog) => {
+    const queryObject: LogQuery = {};
+
+    if (!filter) {
+        return queryObject;
+    }
+
+    if (filter.name) {
+        queryObject["name"] = filter.name;
+    }
+
+    if (filter.status) {
+        queryObject["status"] = filter.status;
+    }
+
+    if (filter.priority) {
+        queryObject["priority"] = filter.priority;
     }
 
     return queryObject;

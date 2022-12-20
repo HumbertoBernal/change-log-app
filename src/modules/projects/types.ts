@@ -2,21 +2,21 @@ import { User } from "../auth/types"
 
 
 export enum LogStatus {
-  TODO = 1,
-  IN_PROGRESS = 2,
-  COMPLETED = 3,
-  IN_REVIEW = 4,
-  ACCEPTED = 5,
-  REJECTED = 6,
-  DONE = 7,
+  TODO = "To do",
+  IN_PROGRESS = "In progress",
+  COMPLETED = "Completed",
+  IN_REVIEW = "In review",
+  ACCEPTED = "Accepted",
+  REJECTED = "Rejected",
+  DONE = "Done",
 }
 
 export enum Priority {
-  NONE = 0,
-  LOW = 1,
-  NORMAL = 2,
-  HIGH = 3,
-  URGENT = 4,
+  NONE = "None",
+  LOW = "Low",
+  NORMAL = "Normal",
+  HIGH = "High",
+  URGENT = "Urgent",
 }
 
 export type RelevantPoint = {
@@ -35,6 +35,25 @@ export type Log = {
   created_at: string,
   updated_at: string
   created_by: User,
+}
+
+export type CreateLog = {
+  project_id: string,
+  name: string,
+  relevant_points: RelevantPoint[],
+  status: LogStatus,
+  priority: Priority,
+
+}
+
+export type FilterLog = {
+  name?: string,
+  status?: LogStatus,
+  priority?: Priority,
+}
+
+export interface LogQuery extends FilterLog {
+  $or?: { [key: string]: { $regex: string } }[]
 }
 
 export type Project = {
