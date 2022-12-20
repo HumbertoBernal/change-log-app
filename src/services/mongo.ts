@@ -2,7 +2,7 @@ import { Filter, MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 import { CreateProject, FilterProject, PatchProject, Project, ProjectQuery } from "@/modules/projects/types";
 import { getQuery } from "@/modules/projects/utils";
 
-
+export const NUMBER_PER_PAGE = 5;
 // Connection URL
 const client = new MongoClient(process.env.MONGO_URI ?? '', { serverApi: ServerApiVersion.v1 });
 
@@ -46,15 +46,18 @@ const get = async <TData>(id: string, dbName: string, collectionName: string) =>
     return findResult
 }
 
-const list = async <TData>(query: Filter<Document> , dbName: string, collectionName: string) => {
+const list = async <TData>(query: Filter<Document>, page: number, dbName: string, collectionName: string) => {
     await client.connect();
 
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
-    const findResult = (await collection.find(query).toArray()) as unknown as TData[];
+    const count = await collection.count();
+
+    const findResult = (await collection.find(query).skip(NUMBER_PER_PAGE * page).limit(NUMBER_PER_PAGE).toArray()) as unknown as TData[];
     client.close()
-    return findResult
+
+    return { count, findResult }
 };
 
 const update = async <TData>(id: string, project: TData, dbName: string, collectionName: string) => {
@@ -85,8 +88,8 @@ const remove = async (id: string, dbName: string, collectionName: string) => {
 }
 
 const createProject = (name: string, description: string) => create<CreateProject>({ name, description }, dbName, projectCollectionName);
+const listProjects = async (filters?: FilterProject, page: number) => list<Project>(getQuery(filters), page, dbName, projectCollectionName);
 const getProject = (id: string) => get<Project>(id, dbName, projectCollectionName);
-const listProjects = async (filters?: FilterProject) => list<Project>(getQuery(filters), dbName, projectCollectionName);
 const patchProject = async (id: string, project: PatchProject) => update<PatchProject>(id, project, dbName, projectCollectionName);
 const putProject = async (id: string, project: Project) => update<Project>(id, project, dbName, projectCollectionName);
 const deleteProject = async (id: string) => remove(id, dbName, projectCollectionName);
