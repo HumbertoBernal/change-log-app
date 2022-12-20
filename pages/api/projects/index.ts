@@ -1,12 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { FilterProject, Project } from '@/modules/projects/types'
 import { MongoService, NUMBER_PER_PAGE } from '@/services/mongo'
+import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
 interface Query extends FilterProject {
   page?: number
 }
 
-export default function handler(
+export default withApiAuthRequired(function handler(
   req: NextApiRequest,
   res: NextApiResponse<Project[] | Project | { message: string } | string | null>
 ) {
@@ -56,4 +57,4 @@ export default function handler(
     res.status(400).json({ message: e.message });
   }
 
-}
+})

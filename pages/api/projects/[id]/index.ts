@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Project } from '@/modules/projects/types'
 import { MongoService } from '@/services/mongo'
+import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
-export default function handler(
+
+export default withApiAuthRequired(function handler(
     req: NextApiRequest,
     res: NextApiResponse<Project | { message: string } | string | null>
 ) {
@@ -56,4 +58,4 @@ export default function handler(
         }
 
     }
-} 
+})
