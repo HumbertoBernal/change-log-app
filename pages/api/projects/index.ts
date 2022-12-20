@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Project } from '@/modules/projects/types'
+import { FilterProject, Project } from '@/modules/projects/types'
 import { MongoService } from '@/services/mongo'
-import Error from 'next/error'
 
 export default function handler(
   req: NextApiRequest,
@@ -10,28 +9,33 @@ export default function handler(
 
   const method = req.method
 
-  if (method === 'GET') {
-    MongoService.listProjects()
-      .then((project) => {
-        res.status(200).json(project)
-      })
-      .catch((e) => {
-        console.error(e);
-        res.status(500).json({ message: "Internal Server Error" });
-      })
+  try {
+
+    if (method === 'GET') {
+
+      const data = req.query as FilterProject;
+
+      MongoService.listProjects(data)
+        .then((project) => {
+          res.status(200).json(project)
+        })
+
     }
     else if (method === 'POST') {
-      
+
       const { name, description } = req.body
-      
-    MongoService.createProject(name, description)
-    .then((projectId) => {
-      res.status(201).send(`Successfully created project with id ${projectId}`)
-    })
-    .catch((e) => {
-      console.error(e);
-      res.status(500).json({ message: "Internal Server Error" });
-    })
+
+      MongoService.createProject(name, description)
+        .then((result) => {
+          result
+            ? res.status(201).json({ message: `Successfully created project with id ${projectId}` })
+            : res.status(500).json({ message: `Failed to create project` })
+        })
+
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ message: e.message });
   }
 
 }
