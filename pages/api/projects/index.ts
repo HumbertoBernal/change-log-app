@@ -27,7 +27,7 @@ export default function handler(
           const maxPages = Math.ceil(results.count / NUMBER_PER_PAGE)
           delete data.page
           const query = Object.keys(data).map(key => `${key}=${data[key]}`).join('&')
-          
+
           const response = {
             count: results.count,
             next: actualPage < maxPages ? `/api/projects?page=${actualPage + 1}&${query}` : null,
@@ -37,20 +37,20 @@ export default function handler(
 
           res.status(200).json(response)
         })
-        
-      }
-      else if (method === 'POST') {
-        
-        const { name, description } = req.body
-        
-        MongoService.createProject(name, description)
+
+    }
+    else if (method === 'POST') {
+
+      const { name, description } = req.body
+
+      MongoService.createProject(name, description)
         .then((result) => {
           result
-          ? res.status(201).json({ message: `Successfully created project with id ${result}` })
-          : res.status(500).json({ message: `Failed to create project` })
+            ? res.status(201).json({ message: `Successfully created project with id ${result}` })
+            : res.status(500).json({ message: `Failed to create project` })
         })
-        
-      }
+
+    }
   } catch (e) {
     console.error(e);
     res.status(400).json({ message: e.message });
