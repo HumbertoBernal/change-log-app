@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { createContext, Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import { HomeIcon, MenuAlt1Icon, ViewListIcon, XIcon } from '@heroicons/react/outline'
 import { SearchIcon, SelectorIcon } from '@heroicons/react/solid'
@@ -6,6 +6,9 @@ import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client'
 import UserPicture from '@/modules/auth/components/UserPicture'
 import Link from 'next/link'
 import { classNames } from '@/common/utils'
+import NotificationModal from '@/common/components/NotificationModal'
+import { NotificationContext } from '@/contexts/NotificationContext'
+import { NotificationType } from '@/layouts/types'
 
 const navigation = [
     { name: 'Home', href: '#', icon: HomeIcon, current: true },
@@ -20,11 +23,13 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const { user, error, isLoading } = useUser()
 
+    const [notification, setNotification] = useState<NotificationType | null>(null)
+
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>{error.message}</div>
 
     return (
-        <>
+        <NotificationContext.Provider value={{ notification, setNotification }}>
             <div className="min-h-full">
                 <Transition.Root show={sidebarOpen} as={Fragment}>
                     <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setSidebarOpen}>
@@ -150,7 +155,7 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                                 leaveTo="transform opacity-0 scale-95"
                             >
                                 <Menu.Items className="z-10 mx-3 origin-top absolute right-0 left-0 mt-1 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none">
-                                   
+
                                     <div className="py-1">
                                         <Menu.Item>
                                             {({ active }) => (
@@ -298,6 +303,8 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                     </main>
                 </div>
             </div>
-        </>
+            <NotificationModal notification={notification} setNotification={setNotification} />
+
+        </NotificationContext.Provider>
     )
 })
