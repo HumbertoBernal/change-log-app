@@ -10,6 +10,7 @@ export default handleAuth({
           scope: "openid profile email ",
           prompt: "login",
         },
+        returnTo: "/projects",
       });
     } catch (error: any) {
       res.status(error.status || 500).end();

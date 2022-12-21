@@ -9,7 +9,7 @@ interface Query extends FilterProject {
 
 export default withApiAuthRequired(function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Project[] | Project | { message: string } | string | null>
+  res: NextApiResponse<Project[] | Project | ResponseMessage | null>
 ) {
 
   const method = req.method

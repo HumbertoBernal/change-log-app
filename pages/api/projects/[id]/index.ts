@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Project } from '@/modules/projects/types'
+import { Project, ResponseMessage } from '@/modules/projects/types'
 import { MongoService } from '@/services/mongo'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
 
 export default withApiAuthRequired(function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Project | { message: string } | string | null>
+    res: NextApiResponse<Project | ResponseMessage | string | null>
 ) {
     const { id } = req.query
     const method = req.method
@@ -49,7 +49,7 @@ export default withApiAuthRequired(function handler(
                 const { name, description } = req.body
                 MongoService.patchProject(id, { name, description })
                     .then((result) => {
-                        res.status(200).send(`Successfully updated project with id ${id}`)
+                        res.status(200).json({ message: `Successfully updated project with id ${id}` })
                     })
             }
         } catch (e) {
