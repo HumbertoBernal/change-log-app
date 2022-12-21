@@ -90,7 +90,6 @@ export default function UpdateModal({ project, setUpdateProject }: UpdateModalPr
                                                     required: false,
                                                 })}
                                                 type="text"
-                                                defaultValue={project.name}
                                                 autoComplete="username"
                                                 className="flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
                                             />
