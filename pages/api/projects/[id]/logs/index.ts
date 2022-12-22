@@ -26,7 +26,7 @@ export default withApiAuthRequired(async function handler(
         const { page } = data;
         const actualPage = page ? parseInt(page) : 1;
 
-        MongoService.listLogs({ ...data, project_id: id }, actualPage - 1).then((results) => {
+        MongoService.listLogs(actualPage - 1, { ...data, project_id: id }).then((results) => {
           const maxPages = Math.ceil(results.count / NUMBER_PER_PAGE);
           delete data.page;
           const query = Object.keys(data)
