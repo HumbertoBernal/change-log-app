@@ -1,11 +1,14 @@
-import LoadingSpinner from "@/common/components/LoadingSpinner";
-import PaginationBlock from "@/common/components/PaginationBlock";
-import { classNames } from "@/common/utils";
+import { Dispatch, Fragment, SetStateAction, useState } from "react"
+import Link from 'next/link'
+
 import { useNotificationContext } from "@/contexts/NotificationContext";
 import { ChevronRightIcon } from "@heroicons/react/solid";
-import { Dispatch, Fragment, SetStateAction, useState } from "react"
-import { FilterProject, Project, ProjectsPagination } from "../types"
-import UpdateModal from "./UpdateModal";
+import { FilterProject, Project, ProjectsPagination } from "@/modules/projects/types"
+import { classNames } from "@/common/utils";
+
+import LoadingSpinner from "@/common/components/LoadingSpinner";
+import PaginationBlock from "@/common/components/PaginationBlock";
+import UpdateModal from "@/modules/projects/components/UpdateModal";
 
 type ProjectsListProps = {
     projectsPagination: ProjectsPagination | undefined,
@@ -124,11 +127,11 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                                                     className={classNames('bg-pink-500 flex-shrink-0 w-2.5 h-2.5 rounded-full')}
                                                     aria-hidden="true"
                                                 />
-                                                <a href="#" className="truncate hover:text-gray-600">
+                                                <Link href={`/projects/${project._id}`} className="truncate hover:text-gray-600">
                                                     <span>
                                                         {project.name}
                                                     </span>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </td>
                                         <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">

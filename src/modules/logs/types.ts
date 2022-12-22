@@ -24,7 +24,7 @@ export type RelevantPoint = {
 }
 
 export type Log = {
-    id: string,
+    _id: string,
     project_id: string,
     name: string,
     relevant_points: RelevantPoint[],
