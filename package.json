@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install",
+    "commit": "yarn cz",
+    "commit:signed": "yarn cz -S"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.0.1",
@@ -20,6 +23,7 @@
     "axios": "^1.2.1",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
+    "husky": "^8.0.2",
     "mongodb": "^4.12.1",
     "next": "13.0.7",
     "react": "18.2.0",
