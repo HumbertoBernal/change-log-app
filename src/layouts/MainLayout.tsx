@@ -16,7 +16,7 @@ const navigation = [
 ]
 
 type MainLayoutProps = {
-    children: React.ReactNode
+    children: React.ReactNode,
 }
 
 export default withPageAuthRequired(function MainLayout({ children }: MainLayoutProps) {
@@ -75,11 +75,9 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                                     </div>
                                 </Transition.Child>
                                 <div className="flex-shrink-0 flex items-center px-4">
-                                    <img
-                                        className="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/workflow-logo-blue-500-mark-gray-700-text.svg"
-                                        alt="Logo"
-                                    />
+                                    <p className="w-full text-center text-xl font-extrabold tracking-tight sm:text-xl lg:text-2xl ">
+                                        Change Log App
+                                    </p>
                                 </div>
                                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                                     <nav className="px-2">
@@ -129,7 +127,7 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                         {/* User account dropdown */}
                         <Menu as="div" className="px-3 relative inline-block text-left">
                             <div>
-                                <Menu.Button className="group w-full bg-gray-100 rounded-md px-3.5 py-2 text-sm text-left font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-purple-500">
+                                <Menu.Button className="group w-full bg-gray-100 rounded-md px-3.5 py-2 text-sm text-left font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
                                     <span className="flex w-full justify-between items-center">
                                         <span className="flex min-w-0 items-center justify-between space-x-3">
                                             <UserPicture />
@@ -174,27 +172,7 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                                 </Menu.Items>
                             </Transition>
                         </Menu>
-                        {/* Sidebar Search */}
-                        <div className="px-3 mt-5">
-                            <label htmlFor="search" className="sr-only">
-                                Search
-                            </label>
-                            <div className="mt-1 relative rounded-md shadow-sm">
-                                <div
-                                    className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                                    aria-hidden="true"
-                                >
-                                    <SearchIcon className="mr-3 h-4 w-4 text-gray-400" aria-hidden="true" />
-                                </div>
-                                <input
-                                    type="text"
-                                    name="search"
-                                    id="search"
-                                    className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md"
-                                    placeholder="Search"
-                                />
-                            </div>
-                        </div>
+
                         {/* Navigation */}
                         <nav className="px-3 mt-6">
                             <div className="space-y-1">
@@ -224,11 +202,10 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                 </div>
                 {/* Main column */}
                 <div className="lg:pl-64 flex flex-col">
-                    {/* Search header */}
                     <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:hidden">
                         <button
                             type="button"
-                            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 lg:hidden"
+                            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden"
                             onClick={() => setSidebarOpen(true)}
                         >
                             <span className="sr-only">Open sidebar</span>
@@ -236,29 +213,13 @@ export default withPageAuthRequired(function MainLayout({ children }: MainLayout
                         </button>
                         <div className="flex-1 flex justify-between px-4 sm:px-6 lg:px-8">
                             <div className="flex-1 flex">
-                                <form className="w-full flex md:ml-0" action="#" method="GET">
-                                    <label htmlFor="search-field" className="sr-only">
-                                        Search
-                                    </label>
-                                    <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                                        <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                                            <SearchIcon className="h-5 w-5" aria-hidden="true" />
-                                        </div>
-                                        <input
-                                            id="search-field"
-                                            name="search-field"
-                                            className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:text-sm"
-                                            placeholder="Search"
-                                            type="search"
-                                        />
-                                    </div>
-                                </form>
+
                             </div>
                             <div className="flex items-center">
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="ml-3 relative">
                                     <div>
-                                        <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                        <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             <span className="sr-only">Open user menu</span>
                                             <UserPicture />
                                         </Menu.Button>

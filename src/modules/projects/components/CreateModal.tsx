@@ -10,10 +10,11 @@ import LoadingSpinner from '@/common/components/LoadingSpinner'
 
 type CreateModalProps = {
     open: boolean
-    setOpen: Dispatch<SetStateAction<boolean>>
+    setOpen: Dispatch<SetStateAction<boolean>>,
+    reloadProjects: () => void
 }
 
-export default function CreateModal({ open, setOpen }: CreateModalProps) {
+export default function CreateModal({ open, setOpen, reloadProjects }: CreateModalProps) {
 
     const [loading, setLoading] = useState<boolean>(false)
     const { register, getValues } = useForm<CreateProject>();
@@ -36,6 +37,7 @@ export default function CreateModal({ open, setOpen }: CreateModalProps) {
             setNotification({ title: 'Success', message: 'Project created successfully', isError: false })
             setLoading(false)
             setOpen(false)
+            reloadProjects()
         }
     }
 
