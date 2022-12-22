@@ -1,82 +1,84 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { FilterLog, LogsPagination } from "@/modules/logs/types";
+import { LogsPagination } from "@/modules/logs/types";
 import { LogService } from "@/services/logs";
 
 import MainLayout from "@/layouts/MainLayout";
 import LoadingSpinner from "@/common/components/LoadingSpinner";
 import CreateModal from "@/modules/logs/components/CreateModal";
-import DeleteModal from "@/modules/logs/components/DeleteModal";
 import LogsSection from "@/modules/logs/components/LogsSection";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
-import { HomeIcon } from '@heroicons/react/solid'
+import { HomeIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 
 const LogPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
 
-  const router = useRouter()
-  const { id } = router.query
-
-  const [logsPagination, setLogsPagination] = useState<LogsPagination>()
-  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [logsPagination, setLogsPagination] = useState<LogsPagination>();
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const currentPageState = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
 
   const pages = [
-    { name: 'Projects', href: '/projects', current: false },
-    { name: typeof id === 'string' ? id : 'Not Fount', href: '/projects/' + id, current: true },
-  ]
+    { name: "Projects", href: "/projects", current: false },
+    { name: typeof id === "string" ? id : "Not Fount", href: "/projects/" + id, current: true },
+  ];
 
-  const fetchLogs = useCallback(async (url?: string) => {
+  const fetchLogs = useCallback(
+    async (url?: string) => {
+      if (typeof id !== "string") {
+        setLoading(false);
+        return false;
+      }
 
-    if (typeof id !== 'string') {
-      setLoading(false)
-      return false
-    }
+      const [res, err] = url ? await LogService.getFromUrl(url) : await LogService.getAll(id);
 
-    const [res, err] = url ? await LogService.getFromUrl(url) : await LogService.getAll(id);
+      if (err) {
+        console.log(err);
+        setLoading(false);
+        return false;
+      }
 
-    if (err) {
-      console.log(err)
-      setLoading(false)
-      return false
-    }
-
-    if (res) {
-      setLogsPagination(res.data)
-      setLoading(false)
-      return true
-    }
-  }, [id])
+      if (res) {
+        setLogsPagination(res.data);
+        setLoading(false);
+        return true;
+      }
+    },
+    [id],
+  );
 
   const reloadLogs = () => {
-    setLoading(true)
-    fetchLogs()
-    currentPageState[1](1)
-  }
+    setLoading(true);
+    fetchLogs();
+    currentPageState[1](1);
+  };
 
   useEffect(() => {
-    fetchLogs()
-  }, [fetchLogs])
+    fetchLogs();
+  }, [fetchLogs]);
 
   useEffect(() => {
     if (openCreateModal === undefined) {
-      setLoading(true)
-      fetchLogs()
+      setLoading(true);
+      fetchLogs();
     }
-  }, [openCreateModal, fetchLogs])
+  }, [openCreateModal, fetchLogs]);
 
   return (
-    <MainLayout >
+    <MainLayout>
       <Fragment>
         {/* Page title & actions */}
         <div className="border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-medium leading-6 text-gray-900 sm:truncate"> Project details</h1>
+            <h1 className="text-lg font-medium leading-6 text-gray-900 sm:truncate">
+              {" "}
+              Project details
+            </h1>
           </div>
           <div className="mt-4 flex sm:mt-0 sm:ml-4">
-
             <button
               onClick={() => setOpenCreateModal(true)}
               type="button"
@@ -113,7 +115,7 @@ const LogPage = () => {
                     <Link
                       href={page.href}
                       className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                      aria-current={page.current ? 'page' : undefined}
+                      aria-current={page.current ? "page" : undefined}
                     >
                       {page.name}
                     </Link>
@@ -124,15 +126,22 @@ const LogPage = () => {
           </nav>
         </div>
 
-        {loading
-          ? <div className="flex justify-center m-8"><LoadingSpinner /> </div>
-          : < LogsSection logsPagination={logsPagination} reloadLogs={reloadLogs} />
-        }
-        <CreateModal open={openCreateModal} setOpen={setOpenCreateModal} projectId={typeof id === 'string' ? id : ''} reloadLogs={reloadLogs} />
+        {loading ? (
+          <div className="flex justify-center m-8">
+            <LoadingSpinner />{" "}
+          </div>
+        ) : (
+          <LogsSection logsPagination={logsPagination} reloadLogs={reloadLogs} />
+        )}
+        <CreateModal
+          open={openCreateModal}
+          setOpen={setOpenCreateModal}
+          projectId={typeof id === "string" ? id : ""}
+          reloadLogs={reloadLogs}
+        />
       </Fragment>
-
     </MainLayout>
-  )
-}
+  );
+};
 
 export default LogPage;
