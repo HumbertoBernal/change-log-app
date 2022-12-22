@@ -1,5 +1,6 @@
 import { Filter, MongoClient, ObjectId, ServerApiVersion } from "mongodb";
-import { CreateProjectAPI, CreateProject, FilterProject, PatchProject, Project, ProjectQuery, Log, CreateLogAPI, CreateLog, FilterLog } from "@/modules/projects/types";
+import { CreateProjectAPI, CreateProject, FilterProject, PatchProject, Project, ProjectQuery } from "@/modules/projects/types";
+import { CreateLogAPI, CreateLog, FilterLog, Log, LogQuery } from "@/modules/logs/types";
 import { getProjectQuery, getLogQuery } from "@/modules/projects/utils";
 
 export const NUMBER_PER_PAGE = 5;

@@ -1,4 +1,5 @@
-import { FilterProject, ProjectQuery, LogQuery, FilterLog } from "./types";
+import { FilterProject, ProjectQuery } from "@/modules/projects/types";
+import { FilterLog, LogQuery } from "@/modules/logs/types";
 
 export const getProjectQuery = (filter?: FilterProject) => {
     const queryObject: ProjectQuery = {};

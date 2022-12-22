@@ -1,7 +1,8 @@
-import asyncWrapper from "@/common/utils";
-import { CreateProject, PatchProject, Project, PutProject, ResponseMessage, ProjectsPagination } from "@/modules/projects/types";
+import { CreateProject, PatchProject, Project, PutProject, ProjectsPagination } from "@/modules/projects/types";
+import { ResponseMessage } from "@/common/types";
 import { AxiosError, AxiosResponse } from "axios";
 import API from "src/api/axios";
+import asyncWrapper from "@/common/utils";
 
 
 const getAll = async () => {

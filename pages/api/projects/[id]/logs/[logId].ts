@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Project } from '@/modules/projects/types'
 import { MongoService } from '@/services/mongo'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { Log } from '@/modules/logs/types'
 
 export default withApiAuthRequired(function handler(
     req: NextApiRequest,
@@ -58,7 +58,8 @@ export default withApiAuthRequired(function handler(
             }
         } catch (e) {
             console.error(e);
-            res.status(400).json({ message: e.message });
+            const someError = e as Error
+            res.status(400).json({ message: someError.message });
         }
 
     }
