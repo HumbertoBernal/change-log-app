@@ -21,11 +21,11 @@ const patch = async (id: string, project: PatchProject) => {
 };
 
 const put = async (id: string, project: PutProject) => {
-    return asyncWrapper<AxiosResponse<ResponseMessage>, AxiosError>(API.patch(`api/projects/${id}`, project));
+    return asyncWrapper<AxiosResponse<ResponseMessage>, AxiosError>(API.put(`api/projects/${id}`, project));
 };
 
 const remove = async (id: string) => {
-    return asyncWrapper<AxiosResponse<ResponseMessage>, AxiosError>(API.patch(`api/projects/${id}`));
+    return asyncWrapper<AxiosResponse<ResponseMessage>, AxiosError>(API.delete(`api/projects/${id}`));
 };
 
 const getFromUrl = async (url: string) => {

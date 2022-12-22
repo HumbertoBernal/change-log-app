@@ -83,7 +83,7 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                     </ul>}
                 {projectsPagination && <PaginationBlock
                     count={projectsPagination.count}
-                    totalPages={Math.floor(projectsPagination.count / 5) + 1}
+                    totalPages={projectsPagination.count % 5 === 0 ? projectsPagination.count / 5 : Math.floor(projectsPagination.count / 5) + 1}
                     currentPage={currentPage}
                     handleNextPage={handleNextPage}
                     handlePreviousPage={handlePreviousPage}
@@ -109,7 +109,7 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                             </tr>
                         </thead>
                         {loading
-                            ? <tbody > <div className="m-8"> <LoadingSpinner /></div></tbody>
+                            ? <tbody > <tr ><td rowspan="4"> <div className="m-8"> <LoadingSpinner /></div></td></tr></tbody>
                             : <tbody className="bg-white divide-y divide-gray-100">
                                 {projectsPagination && projectsPagination.results.map((project) => (
                                     <tr key={project._id}>
@@ -145,13 +145,13 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                 </div>
                 {projectsPagination && <PaginationBlock
                     count={projectsPagination.count}
-                    totalPages={Math.floor(projectsPagination.count / 5) + 1}
+                    totalPages={projectsPagination.count % 5 === 0 ? projectsPagination.count / 5 : Math.floor(projectsPagination.count / 5) + 1}
                     currentPage={currentPage}
                     handleNextPage={handleNextPage}
                     handlePreviousPage={handlePreviousPage}
                 />}
             </div>
             {updateProject && <UpdateModal setUpdateProject={setUpdateProject} project={updateProject} />}
-        </Fragment>
+        </Fragment >
     )
 }
