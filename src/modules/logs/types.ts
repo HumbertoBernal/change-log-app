@@ -37,7 +37,6 @@ export type Log = {
 }
 
 export type CreateLog = {
-    project_id: string,
     name: string,
     relevant_points: RelevantPoint[],
     status: LogStatus,

@@ -5,8 +5,8 @@ import { LogService } from "@/services/logs";
 import MainLayout from "@/layouts/MainLayout";
 import LoadingSpinner from "@/common/components/LoadingSpinner";
 import CreateModal from "@/modules/logs/components/CreateModal";
+import DeleteModal from "@/modules/logs/components/DeleteModal";
 import LogsSection from "@/modules/logs/components/LogsSection";
-import { useForm } from "react-hook-form";
 import { useRouter } from 'next/router'
 
 import { HomeIcon } from '@heroicons/react/solid'
@@ -19,6 +19,7 @@ const LogPage = () => {
 
   const [logsPagination, setLogsPagination] = useState<LogsPagination>()
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const currentPageState = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -125,9 +126,9 @@ const LogPage = () => {
 
         {loading
           ? <div className="flex justify-center m-8"><LoadingSpinner /> </div>
-          : < LogsSection logsPagination={logsPagination} />
+          : < LogsSection logsPagination={logsPagination} reloadLogs={reloadLogs} />
         }
-        <CreateModal open={openCreateModal} setOpen={setOpenCreateModal} reloadLogs={reloadLogs} />
+        <CreateModal open={openCreateModal} setOpen={setOpenCreateModal} projectId={typeof id === 'string' ? id : ''} reloadLogs={reloadLogs} />
       </Fragment>
 
     </MainLayout>
