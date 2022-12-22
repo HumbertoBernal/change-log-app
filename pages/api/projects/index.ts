@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  FilterProject,
-  Project,
-  ResponseMessage,
-  ProjectsPagination,
-} from "@/modules/projects/types";
+import { FilterProject, Project, ProjectsPagination } from "@/modules/projects/types";
+import { ResponseMessage } from "@/common/types";
 import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
