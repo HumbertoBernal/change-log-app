@@ -43,7 +43,10 @@ export type CreateLog = {
   relevant_points: RelevantPoint[],
   status: LogStatus,
   priority: Priority,
+}
 
+export interface CreateLogAPI extends CreateLog {
+  created_by: User,
 }
 
 export type FilterLog = {
@@ -69,6 +72,10 @@ export type Project = {
 export type CreateProject = {
   name: string,
   description: string,
+}
+
+export interface CreateProjectAPI extends CreateProject {
+  created_by: User,
 }
 
 export type PatchProject = {

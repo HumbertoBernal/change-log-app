@@ -1,17 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { FilterProject, Project, ResponseMessage } from '@/modules/projects/types'
 import { MongoService, NUMBER_PER_PAGE } from '@/services/mongo'
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 
 interface Query extends FilterProject {
   page?: number
 }
 
-export default withApiAuthRequired(function handler(
+export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Project[] | Project | ResponseMessage | null>
 ) {
 
+  const { user } = await getSession(req, res);
   const method = req.method
 
   try {
@@ -43,8 +44,9 @@ export default withApiAuthRequired(function handler(
     else if (method === 'POST') {
 
       const { name, description } = req.body
+      const created_by = { name: user.name, email: user.email }
 
-      MongoService.createProject(name, description)
+      MongoService.createProject({name, description, created_by})
         .then((result) => {
           result
             ? res.status(201).json({ message: `Successfully created project with id ${result}` })

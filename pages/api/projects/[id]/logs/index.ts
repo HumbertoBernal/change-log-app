@@ -1,17 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { FilterLog, Log } from '@/modules/projects/types'
 import { MongoService, NUMBER_PER_PAGE } from '@/services/mongo'
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 
 interface Query extends FilterLog {
     page?: number
 }
 
-export default withApiAuthRequired(function handler(
+export default withApiAuthRequired(async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Log[] | Log | { message: string } | string | null>
 ) {
 
+    const { user } = await getSession(req, res);
     const { id } = req.query
     const method = req.method
     if (typeof id !== 'string') { res.status(400).json({ message: "Id must be a string" }); }
@@ -44,12 +45,20 @@ export default withApiAuthRequired(function handler(
         }
         else if (method === 'POST') {
 
-            const data = req.body
+            const { name, relevant_points, status, priority } = req.body
             const { id } = req.query
 
             // Todo validate data have the CreateLog type before sending to MongoService
+            const createLogData: CreateLogAPI = {
+                name,
+                project_id: id,
+                relevant_points,
+                status,
+                priority,
+                created_by: { name: user.name, email: user.email },
+            }
 
-            MongoService.createLog(id, data)
+            MongoService.createLog(createLogData)
                 .then((result) => {
                     result
                         ? res.status(201).json({ message: `Successfully created log with id ${result}` })

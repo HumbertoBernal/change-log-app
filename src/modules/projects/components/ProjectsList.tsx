@@ -127,7 +127,7 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                                             </div>
                                         </td>
                                         <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                                            {new Date(project.created_at).toLocaleString()}
+                                            {new Date(project.updated_at).toLocaleString()}
                                         </td>
                                         <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-500 font-medium">
                                             {project.created_by.name}

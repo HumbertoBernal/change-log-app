@@ -1,5 +1,5 @@
 import { Filter, MongoClient, ObjectId, ServerApiVersion } from "mongodb";
-import { CreateProject, FilterProject, PatchProject, Project, ProjectQuery, Log, CreateLog, FilterLog } from "@/modules/projects/types";
+import { CreateProjectAPI, CreateProject, FilterProject, PatchProject, Project, ProjectQuery, Log, CreateLogAPI, CreateLog, FilterLog } from "@/modules/projects/types";
 import { getProjectQuery, getLogQuery } from "@/modules/projects/utils";
 
 export const NUMBER_PER_PAGE = 5;
@@ -24,7 +24,6 @@ const create = async <TData>(info: TData, dbName: string, collectionName: string
         ...info,
         created_at: now,
         updated_at: now,
-        created_by: { name: "Michael Doe", email: "jdowmich@gmail.com" }
     }
 
     const result = await collection.insertOne(data);
@@ -88,14 +87,14 @@ const remove = async (id: string, dbName: string, collectionName: string) => {
     return deleteResult
 }
 
-const createProject = async (name: string, description: string) => await create<CreateProject>({ name, description }, dbName, projectCollectionName);
+const createProject = async ({ name, description, created_by }: CreateProjectAPI) => await create<CreateProject>({ name, description, created_by }, dbName, projectCollectionName);
 const listProjects = async (filters?: FilterProject, page: number) => await list<Project>(getProjectQuery(filters), page, dbName, projectCollectionName);
 const getProject = async (id: string) => await get<Project>(id, dbName, projectCollectionName);
 const patchProject = async (id: string, project: PatchProject) => await update<PatchProject>(id, project, dbName, projectCollectionName);
 const putProject = async (id: string, project: Project) => await update<Project>(id, project, dbName, projectCollectionName);
 const deleteProject = async (id: string) => await remove(id, dbName, projectCollectionName);
 
-const createLog = async (projectId: string, log: CreateLog) => await create<CreateLog>({ projectId, ...log }, dbName, logCollectionName);
+const createLog = async (log: CreateLogAPI) => await create<CreateLogAPI>({ ...log }, dbName, logCollectionName);
 const listLogs = async (filters?: FilterLog, page: number) => await list<Log>(getLogQuery(filters), page, dbName, logCollectionName);
 const getLog = async (id: string) => await get<Log>(id, dbName, logCollectionName);
 const patchLog = async (id: string, log: PatchLog) => await update<PatchLog>(id, log, dbName, logCollectionName);
