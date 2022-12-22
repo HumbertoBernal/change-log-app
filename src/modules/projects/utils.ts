@@ -1,4 +1,4 @@
-import { FilterProject, ProjectQuery, LogQuery } from "./types";
+import { FilterProject, ProjectQuery, LogQuery, FilterLog } from "./types";
 
 export const getProjectQuery = (filter?: FilterProject) => {
     const queryObject: ProjectQuery = {};
@@ -8,15 +8,16 @@ export const getProjectQuery = (filter?: FilterProject) => {
     }
 
     if (filter.name) {
-        queryObject["name"] = filter.name;
+        queryObject["name"] = { $regex: filter.name };
     }
 
     if (filter.creator) {
-        queryObject["$or"] = [{ "created_by.name": { $regex: filter.creator} }, { "created_by.email": { $regex: filter.creator} }]
+        queryObject["$or"] = [{ "created_by.name": { $regex: filter.creator } }, { "created_by.email": { $regex: filter.creator } }]
     }
 
     if (filter.created_at) {
-        queryObject["created_at"] = filter.created_at;
+        const inputDate = new Date(filter.created_at)
+        queryObject["created_at"] = { "$gte": inputDate.toISOString()};
     }
 
     return queryObject;

@@ -98,8 +98,9 @@ export type FilterProject = {
   created_at?: string,
 }
 
-
 export interface ProjectQuery extends FilterProject {
+  name?: { $regex: string },
+  created_at?: { $gte: string }
   $or?: { [key: string]: { $regex: string } }[]
 }
 
@@ -108,7 +109,7 @@ export type ResponseMessage = {
 }
 
 export type ProjectsPagination = {
-  count: number, 
+  count: number,
   next: string | null,
   previous: string | null,
   results: Project[],
