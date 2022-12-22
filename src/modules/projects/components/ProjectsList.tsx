@@ -109,7 +109,7 @@ export default function ProjectsList({ projectsPagination, fetchProjects, curren
                             </tr>
                         </thead>
                         {loading
-                            ? <div className="m-8"> <LoadingSpinner /></div>
+                            ? <tbody > <div className="m-8"> <LoadingSpinner /></div></tbody>
                             : <tbody className="bg-white divide-y divide-gray-100">
                                 {projectsPagination && projectsPagination.results.map((project) => (
                                     <tr key={project._id}>
