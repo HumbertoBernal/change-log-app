@@ -31,6 +31,10 @@ export const getLogQuery = (filter?: FilterLog) => {
         return queryObject;
     }
 
+    if (filter.project_id) {
+        queryObject["project_id"] = filter.project_id;
+    }
+   
     if (filter.name) {
         queryObject["name"] = filter.name;
     }
