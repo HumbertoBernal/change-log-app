@@ -34,7 +34,7 @@ export default function DeleteModal({ open, setOpen, project }: DeleteModalProps
         if (res) {
             setNotification({ title: 'Delete Successfully', message: res.data.message, isError: false })
             setLoading(false)
-            router.reload(window.location.pathname)
+            router.reload()
         }
     }
 
