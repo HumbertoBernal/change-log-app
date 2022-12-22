@@ -9,16 +9,20 @@ import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 interface Query extends FilterProject {
-  page?: number;
+  page?: string;
 }
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Project[] | Project | ResponseMessage | ProjectsPagination | null>,
 ) {
-  const session = getSession(req, res);
+  const session = await getSession(req, res);
   const user = session?.user;
   const method = req.method;
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
 
   try {
     if (method === "GET") {
@@ -30,6 +34,7 @@ export default withApiAuthRequired(async function handler(
         const maxPages = Math.ceil(results.count / NUMBER_PER_PAGE);
         delete data.page;
         const query = Object.keys(data)
+          // @ts-ignore
           .map((key) => `${key}=${data[key]}`)
           .join("&");
 

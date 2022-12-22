@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FilterLog, Log, LogsPagination } from "@/modules/logs/types";
+import { FilterLog, Log, LogsPagination, CreateLogAPI } from "@/modules/logs/types";
 import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
@@ -11,12 +11,16 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Log[] | Log | { message: string } | LogsPagination | null>,
 ) {
-  const session = getSession(req, res);
+  const session = await getSession(req, res);
   const user = session?.user;
   const { id } = req.query;
   const method = req.method;
   if (typeof id !== "string") {
     res.status(400).json({ message: "Id must be a string" });
+  }
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
