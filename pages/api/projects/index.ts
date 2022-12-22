@@ -11,7 +11,8 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Project[] | Project | ResponseMessage | null>,
 ) {
-  const { user } = await getSession(req, res);
+  const session = getSession(req, res);
+  const user = session?.user;
   const method = req.method;
 
   try {

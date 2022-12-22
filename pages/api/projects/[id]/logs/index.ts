@@ -1,17 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FilterLog, Log } from "@/modules/logs/types";
+import { FilterLog, Log, Pagin } from "@/modules/logs/types";
 import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 interface Query extends FilterLog {
-  page?: number;
+  page?: string;
 }
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Log[] | Log | { message: string } | string | null>,
+  res: NextApiResponse<Log[] | Log | { message: string } | PaginationLo | null>,
 ) {
-  const { user } = await getSession(req, res);
+  const session = getSession(req, res);
+  const user = session?.user;
   const { id } = req.query;
   const method = req.method;
   if (typeof id !== "string") {
@@ -28,6 +29,7 @@ export default withApiAuthRequired(async function handler(
         const maxPages = Math.ceil(results.count / NUMBER_PER_PAGE);
         delete data.page;
         const query = Object.keys(data)
+          // @ts-ignore
           .map((key) => `${key}=${data[key]}`)
           .join("&");
 
