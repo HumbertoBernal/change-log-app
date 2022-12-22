@@ -48,7 +48,8 @@ export default withApiAuthRequired(function handler(
       }
     } catch (e) {
       console.error(e);
-      res.status(400).json({ message: e.message });
+      const error = e as Error;
+      res.status(400).json({ message: error.message });
     }
   }
 });
