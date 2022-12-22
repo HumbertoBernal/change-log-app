@@ -49,7 +49,6 @@ export default withApiAuthRequired(async function handler(
         });
       } else if (method === "POST") {
         const { name, relevant_points, status, priority } = req.body;
-        const { id } = req.query;
 
         // Todo validate data have the CreateLog type before sending to MongoService
         const createLogData: CreateLogAPI = {
