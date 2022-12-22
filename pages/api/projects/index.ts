@@ -1,5 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FilterProject, Project, ResponseMessage } from "@/modules/projects/types";
+import {
+  FilterProject,
+  Project,
+  ResponseMessage,
+  ProjectsPagination,
+} from "@/modules/projects/types";
 import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
@@ -9,7 +14,7 @@ interface Query extends FilterProject {
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Project[] | Project | ResponseMessage | null>,
+  res: NextApiResponse<Project[] | Project | ResponseMessage | ProjectsPagination | null>,
 ) {
   const session = getSession(req, res);
   const user = session?.user;

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FilterLog, Log, Pagin } from "@/modules/logs/types";
+import { FilterLog, Log, LogsPagination } from "@/modules/logs/types";
 import { MongoService, NUMBER_PER_PAGE } from "@/services/mongo";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
@@ -9,7 +9,7 @@ interface Query extends FilterLog {
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Log[] | Log | { message: string } | PaginationLo | null>,
+  res: NextApiResponse<Log[] | Log | { message: string } | LogsPagination | null>,
 ) {
   const session = getSession(req, res);
   const user = session?.user;
