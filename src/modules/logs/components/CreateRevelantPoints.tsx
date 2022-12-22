@@ -47,7 +47,7 @@ const CreateRelevantPoints = ({ setValue, control, register }: CreateRelevantPoi
                         <div className="mt-1 sm:mt-0 sm:col-span-2">
                             <div className="max-w-lg flex rounded-md shadow-sm">
 
-                                {field.descriptors.map((name, index) => <input
+                                {field.descriptors.map((name, index) => <input key={name}
                                     {...register(`relevant_points.${index}.descriptors.${index}`)}
                                     type="text"
                                     className="flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"

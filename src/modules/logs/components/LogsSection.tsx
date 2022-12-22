@@ -47,7 +47,7 @@ const LogsSection = ({ logsPagination, reloadLogs }: LogsSectionProps) => {
                                             <ul className='list-circle ml-4 space-y-2'>
 
                                                 {relevant_point.descriptors && relevant_point.descriptors.map((descriptor) =>
-                                                    <li>{descriptor}</li>)
+                                                    <li key={descriptor[0]}>{descriptor}</li>)
                                                 }
                                             </ul>
 

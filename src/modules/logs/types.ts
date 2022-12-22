@@ -65,6 +65,7 @@ export interface CreateLogAPI extends CreateLog {
 }
 
 export type FilterLog = {
+    product_id?: string,
     name?: string,
     status?: LogStatus,
     priority?: Priority,

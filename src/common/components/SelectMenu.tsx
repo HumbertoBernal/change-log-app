@@ -12,12 +12,11 @@ type SelectMenuProps = {
 export default function SelectMenu({ setValue, options }: SelectMenuProps) {
     const [selected, setSelected] = useState(options[0])
 
-    useEffect(() => {
-        setValue(selected.name)
-    }, [selected])
-
     return (
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={selected} onChange={(selected: { id: number, name: string }) => {
+            setSelected(selected);
+            setValue(selected.name)
+        }}>
             {({ open }) => (
                 <>
                     <div className="mt-1 relative w-full">

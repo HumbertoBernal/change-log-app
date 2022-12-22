@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { FilterLog, LogsPagination } from "@/modules/logs/types";
 import { LogService } from "@/services/logs";
 
@@ -28,7 +28,7 @@ const LogPage = () => {
     { name: typeof id === 'string' ? id : 'Not Fount', href: '/projects/' + id, current: true },
   ]
 
-  const fetchLogs = async (url?: string) => {
+  const fetchLogs = useCallback(async (url?: string) => {
 
     if (typeof id !== 'string') {
       setLoading(false)
@@ -48,7 +48,7 @@ const LogPage = () => {
       setLoading(false)
       return true
     }
-  }
+  }, [id])
 
   const reloadLogs = () => {
     setLoading(true)
@@ -65,7 +65,7 @@ const LogPage = () => {
       setLoading(true)
       fetchLogs()
     }
-  }, [openCreateModal])
+  }, [openCreateModal, fetchLogs])
 
   return (
     <MainLayout >
