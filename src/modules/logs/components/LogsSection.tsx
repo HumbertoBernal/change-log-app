@@ -1,16 +1,16 @@
 import { TrashIcon, ClipboardIcon } from '@heroicons/react/solid'
-import { Log } from "@/modules/logs/types";
+import { Log, LogsPagination } from "@/modules/logs/types";
 
 type LogsSectionProps = {
-    logs: Log[],
+    logsPagination: LogsPagination| undefined,
 }
 
-const LogsSection = ({ logs }: LogsSectionProps) => {
+const LogsSection = ({ logsPagination }: LogsSectionProps) => {
 
     return (
         <div className="m-10">
             <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {logs.map((log) => {
+                {logsPagination && logsPagination.results.map((log) => {
                     const date = new Date(log.created_at)
                     const dateFormatted = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`
 
