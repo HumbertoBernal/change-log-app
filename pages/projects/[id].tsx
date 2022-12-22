@@ -58,7 +58,7 @@ const LogPage = () => {
 
   useEffect(() => {
     fetchLogs()
-  }, [])
+  }, [fetchLogs])
 
   useEffect(() => {
     if (openCreateModal === undefined) {

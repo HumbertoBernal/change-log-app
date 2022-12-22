@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Project, ResponseMessage } from '@/modules/projects/types'
+import { Project } from '@/modules/projects/types'
+import { ResponseMessage } from '@/modules/common/types'
 import { MongoService } from '@/services/mongo'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
